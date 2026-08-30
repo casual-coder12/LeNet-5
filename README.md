@@ -39,16 +39,6 @@ This project implements the classic LeNet-5 architecture, originally developed b
 └── README.md                      # This file
 ```
 
-## Requirements
-
-- Python 3.8+
-- TensorFlow >= 2.10
-- NumPy
-- Matplotlib
-- Scikit-learn
-- Seaborn
-- Pandas
-
 ## Installation
 
 1. Clone the repository:
@@ -163,6 +153,6 @@ jupyter notebook notebooks/lenet5.ipynb
 
 This project is provided for educational purposes.
 
-## Author
+---
 
-Neural Networks and Deep Learning - LeNet-5 Project
+*Neural Networks and Deep Learning — LeNet-5 Project*
