@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.metrics import confusion_matrix
@@ -21,37 +22,6 @@ CLASS_NAMES = {
         "truck",
     ],
 }
-
-def plot_training_hist_dict(saved_history: dict, dataset_name: str):
-
-    plt.figure(figsize=(12, 5))
-
-    # Plot Loss
-    plt.subplot(1, 2, 1)
-    plt.plot(saved_history["epoch"], saved_history["loss"], label="Training Loss", color='blue')
-    plt.plot(saved_history["epoch"], saved_history["val_loss"], label="Validation Loss", color='red')
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title(f"Training Loss over Epochs ({dataset_name} Dataset)")
-    plt.legend()
-
-    # Plot Accuracy
-    plt.subplot(1, 2, 2)
-    plt.plot(saved_history["epoch"], saved_history["accuracy"], label="Training Accuracy", color='green')
-    plt.plot(saved_history["epoch"], saved_history["val_accuracy"], label="Validation Accuracy", color='orange')
-    plt.xlabel("Epoch")
-    plt.ylabel("Accuracy")
-    plt.title(f"Training Accuracy over Epochs ({dataset_name} Dataset)")
-    plt.legend()
-
-    plt.tight_layout()
-    
-    os.makedirs("outputs", exist_ok=True)
-    path_to_save_plots = f"outputs/lenet5_{dataset_name}_training_plots.png"
-
-    plt.savefig(path_to_save_plots, dpi=300, bbox_inches='tight')
-
-    plt.show()
 
 def plot_training_history(history: tf.keras.callbacks.History, dataset_name: str):
 
@@ -86,6 +56,39 @@ def plot_training_history(history: tf.keras.callbacks.History, dataset_name: str
     plt.savefig(path_to_save_plots, dpi=300, bbox_inches='tight')
 
     plt.show()
+
+
+def plot_training_hist_dict(saved_history: pd.DataFrame, dataset_name: str):
+
+    plt.figure(figsize=(12, 5))
+
+    # Plot Loss
+    plt.subplot(1, 2, 1)
+    plt.plot(saved_history["epoch"], saved_history["loss"], label="Training Loss", color='blue')
+    plt.plot(saved_history["epoch"], saved_history["val_loss"], label="Validation Loss", color='red')
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title(f"Training Loss over Epochs ({dataset_name} Dataset)")
+    plt.legend()
+
+    # Plot Accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(saved_history["epoch"], saved_history["accuracy"], label="Training Accuracy", color='green')
+    plt.plot(saved_history["epoch"], saved_history["val_accuracy"], label="Validation Accuracy", color='orange')
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.title(f"Training Accuracy over Epochs ({dataset_name} Dataset)")
+    plt.legend()
+
+    plt.tight_layout()
+    
+    os.makedirs("outputs", exist_ok=True)
+    path_to_save_plots = f"outputs/lenet5_{dataset_name}_training_plots.png"
+
+    plt.savefig(path_to_save_plots, dpi=300, bbox_inches='tight')
+
+    plt.show()
+    
 
 def plot_confusion_matrix(model, dataset, dataset_name = "mnist"):
     """
