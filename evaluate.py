@@ -8,18 +8,19 @@ from tensorflow.keras import losses, metrics, models
 from data.dataset import prepare_mnist_dataset, prepare_cifar10_dataset
 from models.lenet5 import LeNet5
 from utils.trainer import LeNetTrainer
-from utils.visualize import plot_confusion_matrix
+from utils.visualize import plot_confusion_matrix, plot_sample_predictions
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Evaluate a pre-trained LeNet-5 model on MNIST or CIFAR-10 datasets.")
     parser.add_argument(
-        "dataset",
+        "--dataset",
         type=str,
+        default="mnist",
         choices=["mnist", "cifar10"],
         help="Dataset name to evaluate on"
     )
     parser.add_argument(
-        "load_type",
+        "--load_type",
         type=str,
         default="w",
         choices=["w", "m"],
@@ -79,14 +80,9 @@ def evaluate():
     print(f"Test Loss: {results["loss"]:.4f}")
     print(f"Test Accuracy: {results["accuracy"]*100:.2f}%")
 
-    predictions = model.predict(test_data)
-    
-    # Extract true labels from test_data and convert predictions to class indices
-    y_true = np.concatenate([y for x, y in test_data], axis=0)
-    y_pred = np.argmax(predictions, axis=1)
-    
-    plot_confusion_matrix(y_true, y_pred, dataset_name=dataset_name)
-    
+    plot_confusion_matrix(model, test_data, dataset_name=dataset_name)
+
+    plot_sample_predictions(model, test_data, dataset_name=dataset_name)
 
 if __name__ == "__main__":
     evaluate()

@@ -85,12 +85,12 @@ python train.py --dataset mnist --save_type both
 
 Evaluate model on test set:
 ```bash
-python evaluate.py mnist w
+python evaluate.py --dataset mnist --load_type w
 ```
 
 Load entire model and evaluate:
 ```bash
-python evaluate.py cifar10 m
+python evaluate.py --dataset cifar10 --load_type m
 ```
 
 ### Arguments
@@ -102,8 +102,8 @@ python evaluate.py cifar10 m
 - `--batch_size`: Training batch size (default: 32)
 
 **evaluate.py:**
-- `dataset`: Dataset name ('mnist' or 'cifar10')
-- `load_type`: Loading format ('w' for weights, 'm' for model)
+- `--dataset`: Dataset name ('mnist' or 'cifar10', default: 'mnist')
+- `--load_type`: Loading format ('w' for weights, 'm' for model, default: 'w')
 
 ## Model Architecture
 
@@ -130,6 +130,7 @@ LeNet-5 consists of:
 Generated outputs are saved in the `outputs/` directory:
 - `lenet5_<dataset>_training_plots.png`: Training loss and accuracy curves
 - `lenet5_<dataset>_confusion_matrix.png`: Confusion matrix heatmap
+- `lenet5_<dataset>_sample_predictions.png`: Sample predictions visualization
 
 Pre-trained models are saved in `saved_models/`:
 - `lenet5_<dataset>.keras`: Complete model (architecture + weights)

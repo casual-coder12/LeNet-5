@@ -6,6 +6,22 @@ import tensorflow as tf
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
+CLASS_NAMES = {
+    "mnist": [str(i) for i in range(10)],
+    "cifar10": [
+        "airplane",
+        "automobile",
+        "bird",
+        "cat",
+        "deer",
+        "dog",
+        "frog",
+        "horse",
+        "ship",
+        "truck",
+    ],
+}
+
 def plot_training_hist_dict(saved_history: dict, dataset_name: str):
 
     plt.figure(figsize=(12, 5))
@@ -71,18 +87,20 @@ def plot_training_history(history: tf.keras.callbacks.History, dataset_name: str
 
     plt.show()
 
-def plot_confusion_matrix(y_true, y_pred, dataset_name = "mnist"):
+def plot_confusion_matrix(model, dataset, dataset_name = "mnist"):
     """
     Computes and displays a formatted Confusion Matrix heatmap.
     """
+    # Extract true labels from test_data and convert predictions to class indices
+    y_true = np.concatenate([y for x, y in dataset], axis=0)
+
+    # Make predictions
+    y_pred = np.argmax(model.predict(dataset), axis=1)
+
     cm = confusion_matrix(y_true, y_pred)
 
     # Define class names based on dataset
-    if dataset_name == "mnist":
-        class_names = [str(i) for i in range(10)]
-    elif dataset_name == "cifar10":
-        class_names = ["airplane", "automobile", "bird", "cat", "deer", 
-                        "dog", "frog", "horse", "ship", "truck"]
+    class_names = CLASS_NAMES[dataset_name]
 
     plt.figure(figsize=(10, 8))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=class_names, yticklabels=class_names)
@@ -96,8 +114,46 @@ def plot_confusion_matrix(y_true, y_pred, dataset_name = "mnist"):
 
     plt.show()
 
-def plot_sample_predictions():
-    return None
+def plot_sample_predictions(model, dataset, dataset_name="mnist", num_samples=10):
+    """
+    Plots a grid of sample images with their true and predicted labels.
+
+    Args:
+        model (tf.keras.Model): The trained model used for predictions.
+        dataset (tf.data.Dataset): The dataset containing images and labels.
+        dataset_name (str): Name of the dataset ("mnist" or "cifar10").
+        num_samples (int): Number of samples to display.
+    """
+    class_names = CLASS_NAMES[dataset_name]
+
+    # Unbatch, shuffle, and take a subset of the dataset for visualization
+    sample_ds = dataset.unbatch().shuffle(buffer_size=10000).take(num_samples)
+    x_samples, y_true = next(iter(sample_ds.batch(num_samples)))
+
+    # Make predictions
+    y_pred = np.argmax(model.predict(x_samples), axis=1)
+
+    num_samples = min(num_samples, len(x_samples))
+
+    plt.figure(figsize=(15, 5))
+    
+    for i in range(num_samples):
+        plt.subplot(2, num_samples // 2, i + 1)
+        plt.imshow(x_samples[i], cmap='gray' if dataset_name == "mnist" else None)
+        true_label = class_names[y_true[i]]
+        pred_label = class_names[y_pred[i]]
+        is_correct = y_true[i] == y_pred[i]
+        title_color = "green" if is_correct else "red"
+        plt.title(f"True: {true_label}\nPred: {pred_label}", color=title_color)
+        plt.axis('off')
+    
+    plt.tight_layout()
+    
+    os.makedirs("outputs", exist_ok=True)
+    path_to_save_samples = f"outputs/lenet5_{dataset_name}_sample_predictions.png"
+    plt.savefig(path_to_save_samples, dpi=300, bbox_inches='tight')
+
+    plt.show()
 
 
 if __name__ == "__main__":
