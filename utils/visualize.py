@@ -138,6 +138,9 @@ def plot_sample_predictions(model, dataset, dataset_name="mnist", num_samples=10
     sample_ds = dataset.unbatch().shuffle(buffer_size=10000).take(num_samples)
     x_samples, y_true = next(iter(sample_ds.batch(num_samples)))
 
+    # Squeeze to remove single-dimensional entries from the shape
+    y_true = np.squeeze(y_true)
+
     # Make predictions
     y_pred = np.argmax(model.predict(x_samples), axis=1)
 
