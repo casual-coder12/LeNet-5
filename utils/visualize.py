@@ -24,7 +24,9 @@ CLASS_NAMES = {
 }
 
 def plot_training_history(history: tf.keras.callbacks.History, dataset_name: str):
-
+    """
+    Plots the training and validation loss and accuracy over epochs.
+    """
     hist = history.history
     epochs = range(len(hist['loss']))
 
@@ -59,7 +61,9 @@ def plot_training_history(history: tf.keras.callbacks.History, dataset_name: str
 
 
 def plot_training_hist_dict(saved_history: pd.DataFrame, dataset_name: str):
-
+    """
+    Plots the training and validation loss and accuracy over epochs from a saved history dictionary.
+    """
     plt.figure(figsize=(12, 5))
 
     # Plot Loss
@@ -88,7 +92,7 @@ def plot_training_hist_dict(saved_history: pd.DataFrame, dataset_name: str):
     plt.savefig(path_to_save_plots, dpi=300, bbox_inches='tight')
 
     plt.show()
-    
+
 
 def plot_confusion_matrix(model, dataset, dataset_name = "mnist"):
     """
@@ -116,6 +120,7 @@ def plot_confusion_matrix(model, dataset, dataset_name = "mnist"):
     plt.savefig(path_to_save_cm, dpi=300, bbox_inches='tight')
 
     plt.show()
+    
 
 def plot_sample_predictions(model, dataset, dataset_name="mnist", num_samples=10):
     """
@@ -158,18 +163,3 @@ def plot_sample_predictions(model, dataset, dataset_name="mnist", num_samples=10
 
     plt.show()
 
-
-if __name__ == "__main__":
-    print("--- Testing Standalone Visualization Utils ---")
-
-    # 1. Generate dummy metrics for testing plot_training_history
-    dummy_history = {
-        "loss": [2.3, 1.5, 0.8, 0.4],
-        "val_loss": [2.1, 1.4, 0.9, 0.5],
-        "accuracy": [0.2, 0.5, 0.75, 0.88],
-        "val_accuracy": [0.25, 0.52, 0.72, 0.85],
-        "epoch": [0, 1, 2, 3]
-        }
-
-    print("Testing plot_training_history()...")
-    plot_training_history(dummy_history, "Dummy")

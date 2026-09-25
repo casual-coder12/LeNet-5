@@ -188,23 +188,3 @@ class LeNetTrainer:
         self.model.load_weights(weights_path)
         print(f"[INFO] Successfully loaded weights from {weights_path}")
 
-
-if __name__ == "__main__":
-    import numpy as np
-    from models.lenet5 import LeNet5
-
-    # Mock dataset creation for code verification (100 samples of 32x32x1 grayscale images)
-    dummy_x = np.random.randn(100, 32, 32, 1).astype(np.float32)
-    dummy_y = tf.keras.utils.to_categorical(np.random.randint(0, 10, size=(100,)), num_classes=10)
-
-    dataset = tf.data.Dataset.from_tensor_slices((dummy_x, dummy_y)).batch(32)
-
-    # Initialize model and trainer
-    lenet = LeNet5(input_shape=(32, 32, 1), num_classes=10)
-    trainer = LeNetTrainer(model=lenet, learning_rate=0.001)
-
-    # Run quick test training for 1 epoch
-    history = trainer.train(train_data=dataset, val_data=dataset, dataset_name="mnist", save_type="w", epochs=1)
-    eval_metrics = trainer.evaluate(test_data=dataset)
-
-    print("\nVerification Test Metrics:", eval_metrics)
