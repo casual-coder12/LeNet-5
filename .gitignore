@@ -141,11 +141,10 @@ saved_models/*.h5
 saved_models/*.csv
 data/mnist/
 data/cifar10/
+models/lenet5_seq.py
+models/lenet5_subclass.py
+README2.md
 
 # Temporary files
 *.tmp
 *.temp
-
-models/lenet5_seq.py
-models/lenet5_subclass.py
-README2.md

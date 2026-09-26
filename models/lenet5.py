@@ -142,25 +142,3 @@ def lenet5_seq(input_shape, num_classes):
     )
     return model
 
-
-if __name__ == "__main__":
-    input_shape = (32, 32, 1)
-    num_classes = 10
-
-    lenet_mnist = LeNet5(input_shape, num_classes)
-    lenet_mnist.build_model().summary()
-
-    # print("\n" + "=" * 30 + "\n")
-
-    # lenet_mnist = lenet5_seq(input_shape, num_classes)
-    # lenet_mnist.summary()
-
-    print("\n" + "=" * 50 + "\n")
-
-    lenet_cifar10 = LeNet5(input_shape, num_classes)
-    lenet_cifar10.build_model().summary()
-
-    # print("\n" + "=" * 30 + "\n")
-
-    # lenet_cifar10 = lenet5_seq(input_shape, num_classes)
-    # lenet_cifar10.summary()
