@@ -2,13 +2,11 @@ import os
 import sys
 import argparse
 
-# # Dodavanje korenskog direktorijuma u path
-# sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-
 from models.lenet5 import LeNet5
 from data.dataset import prepare_mnist_dataset, prepare_cifar10_dataset
 from utils.trainer import LeNetTrainer
 from utils.visualize import plot_training_history
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train LeNet-5 on MNIST or CIFAR-10 datasets.")
