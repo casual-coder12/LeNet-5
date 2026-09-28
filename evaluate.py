@@ -8,6 +8,7 @@ from tensorflow.keras import losses, metrics, models
 from data.dataset import prepare_mnist_dataset, prepare_cifar10_dataset
 from models.lenet5 import LeNet5
 from utils.trainer import LeNetTrainer
+from models.model_loader import load_trained_model
 from utils.visualize import plot_confusion_matrix, plot_sample_predictions
 
 def parse_args():
@@ -52,21 +53,14 @@ def evaluate():
     else:
         raise ValueError("Invalid dataset name. Choose 'mnist' or 'cifar10'.")
 
-    if args.load_type == "w":
-        weights_path = os.path.join(saved_models_dir, f"lenet5_{dataset_name}.weights.h5")
-        if not os.path.exists(weights_path):
-            raise FileNotFoundError(f"Weights file not found at: {weights_path}")
-        # Create a new model and load weights
-        model = LeNet5(input_shape=input_shape, num_classes=10)
-        model.load_weights(weights_path)
-        print("Model weights loaded successfully")
-    elif args.load_type == "m":
-        model_path = os.path.join(saved_models_dir, f"lenet5_{dataset_name}.keras")
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Full model file not found at: {model_path}")
-        # Load the entire pre-trained model
-        model = models.load_model(model_path)
-        print("Model loaded successfully")
+    model = load_trained_model(
+        model_class=LeNet5,
+        dataset_name=dataset_name,
+        load_type=args.load_type,
+        input_shape=input_shape,
+        num_classes=10,
+        saved_models_dir=saved_models_dir
+    )
 
     trainer = LeNetTrainer(model=model)
 

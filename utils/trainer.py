@@ -1,9 +1,11 @@
 import os
 
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras import losses, metrics, optimizers
 from tensorflow.keras.callbacks import CSVLogger, ModelCheckpoint
 
+from models.lenet5 import LeNet5
 
 class LeNetTrainer:
     """
@@ -182,9 +184,20 @@ class LeNetTrainer:
 
         return images, y_true, y_pred, raw_predictions
 
-    def load_model_weights(self, weights_path, input_shape):
-        """Builds the architecture layers first, then loads weights."""
-        self.model.build((None,) + input_shape)
-        self.model.load_weights(weights_path)
-        print(f"[INFO] Successfully loaded weights from {weights_path}")
+    @staticmethod
+    def load_model(model_class, dataset_name, load_type="m", input_shape=(32, 32, 3), num_classes=10, saved_models_dir="saved_models"):
+        ext = ".weights.h5" if load_type == "w" else ".keras"
+        file_path = os.path.join(saved_models_dir, f"lenet5_{dataset_name}{ext}")
 
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File not found at: {file_path}")
+
+        if load_type == "w":
+            model = model_class(input_shape=input_shape, num_classes=num_classes)
+            model.load_weights(file_path)
+        elif load_type == "m":
+            model = tf.keras.models.load_model(file_path)
+
+        print(f"Model loaded successfully from {file_path}")
+
+        return model
