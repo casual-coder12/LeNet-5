@@ -7,8 +7,8 @@ from tensorflow.keras import losses, metrics, models
 
 from data.dataset import prepare_mnist_dataset, prepare_cifar10_dataset
 from models.lenet5 import LeNet5
+from models.model_loader import load_model
 from utils.trainer import LeNetTrainer
-from models.model_loader import load_trained_model
 from utils.visualize import plot_confusion_matrix, plot_sample_predictions
 
 def parse_args():
@@ -53,7 +53,8 @@ def evaluate():
     else:
         raise ValueError("Invalid dataset name. Choose 'mnist' or 'cifar10'.")
 
-    model = load_trained_model(
+    # Load the trained model
+    model = load_model(
         model_class=LeNet5,
         dataset_name=dataset_name,
         load_type=args.load_type,

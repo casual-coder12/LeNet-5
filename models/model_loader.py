@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 from keras import models
 
-def load_trained_model(model_class, dataset_name, load_type="m", input_shape=(32, 32, 3), num_classes=10, saved_models_dir="saved_models"):
+def load_model(model_class, dataset_name, load_type="m", input_shape=(32, 32, 3), num_classes=10, saved_models_dir="saved_models"):
     """
     Loads a model either by instantiating `model_class` and loading weights (.weights.h5),
     or by loading the entire model architecture + weights (.keras).
