@@ -42,8 +42,13 @@ def parse_args():
         default=0.001,
         help="Learning rate for the optimizer (default: 0.001).",
     )
-
+    parser.add_argument(
+        "--load_checkpoint", "-lc",
+        action="store_true",
+        help="Flag to load from a checkpoint if available (default: False).",
+    )
     return parser.parse_args()
+
 
 def main():
     """
@@ -77,7 +82,7 @@ def main():
     trainer = LeNetTrainer(model=model, learning_rate=args.learning_rate)
 
     # Train model
-    history = trainer.train(train_data=train_data, val_data=val_data, epochs=args.epochs, dataset_name=args.dataset, save_type=args.save_type)
+    history = trainer.train(train_data=train_data, val_data=val_data, epochs=args.epochs, dataset_name=args.dataset, save_type=args.save_type, load_checkpoint=args.load_checkpoint)
 
     plot_training_history(history, dataset_name=args.dataset)
 

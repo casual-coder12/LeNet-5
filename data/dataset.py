@@ -4,8 +4,10 @@ import os
 # Ensure the root directory is accessible for imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras import datasets, utils
+from datasets import load_dataset
 from sklearn.model_selection import train_test_split
 
 
@@ -59,7 +61,15 @@ def prepare_cifar10_dataset(batch_size=32, buffer_size=10000):
     Returns:
         tuple: A tuple containing the training, validation, and test datasets.
     """
-    (X_train, y_train), (X_test, y_test) = datasets.cifar10.load_data()
+    # (X_train, y_train), (X_test, y_test) = datasets.cifar10.load_data()
+
+    dataset = load_dataset("uoft-cs/cifar10")
+    
+    X_train = np.array(dataset['train']['img'])
+    y_train = np.array(dataset['train']['label'])
+
+    X_test = np.array(dataset['test']['img'])
+    y_test = np.array(dataset['test']['label'])
 
     print("CIFAR-10 Shapes:", X_train.shape, y_train.shape, X_test.shape, y_test.shape)  # Debugging shapes
 

@@ -123,7 +123,7 @@ LeNet-5 consists of:
 | Dataset | Accuracy | Loss |
 |---|---|---|
 | MNIST | ~99% | ~0.05 |
-| CIFAR-10 | ~70–75% | ~0.8–1.0 |
+| CIFAR-10 | ~50–55% | ~1.2–1.4 |
 
 ## Outputs
 

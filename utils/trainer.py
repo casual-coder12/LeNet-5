@@ -57,7 +57,8 @@ class LeNetTrainer:
         val_data: tf.data.Dataset,
         dataset_name: str,
         save_type: str,
-        epochs: int = 20
+        epochs: int = 20,
+        load_checkpoint: bool = False
         ) -> tf.keras.callbacks.History:
         """
         Trains the LeNet-5 model using tf.data Datasets.
@@ -89,7 +90,15 @@ class LeNetTrainer:
             mode='min'
             )
 
-        print(f"--- Starting LeNet-5 Training for {epochs} Epochs ---")
+        if load_checkpoint and os.path.exists(path_to_save_checkpoint):
+            print(f"Loading model from checkpoint: {path_to_save_checkpoint}")
+            self.model = tf.keras.models.load_model(path_to_save_checkpoint)
+            print("Model loaded successfully. Resuming training...")
+        elif load_checkpoint and not os.path.exists(path_to_save_checkpoint):
+            print("No checkpoint found. Starting training from scratch.")
+        else:
+            print(f"--- Starting LeNet-5 Training for {epochs} Epochs ---")
+
         self.history = self.model.fit(
             train_data,
             validation_data=val_data,
